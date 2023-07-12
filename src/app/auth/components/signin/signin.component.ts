@@ -7,7 +7,7 @@ import { Router } from '@angular/router';
 @Component({
   selector: 'app-signin',
   templateUrl: './signin.component.html',
-  styleUrls: ['./signin.component.less']
+  styleUrls: ['../../styles/auth-styles.less', '../../../../assets/styles/buttons.less']
 })
 export class SigninComponent implements OnInit {
   loginSubscription: Subscription;

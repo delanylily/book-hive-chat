@@ -1,1 +1,6 @@
+<ng-container *ngIf="auth.isLoggedIn$ | async as user; else authButtons"></ng-container>
 <router-outlet></router-outlet>
+
+<ng-template #authButtons>
+  <button>Logout</button>
+</ng-template>

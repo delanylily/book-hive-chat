@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { authState, Auth, createUserWithEmailAndPassword, signInWithEmailAndPassword, GoogleAuthProvider, updateProfile } from '@angular/fire/auth';
-import { forkJoin, from, Observable, of, pluck, switchMap } from 'rxjs';
+import { BehaviorSubject, forkJoin, from, Observable, of, pluck, switchMap } from 'rxjs';
 
 import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
@@ -10,6 +10,9 @@ import { environment } from 'src/environments/environment';
 })
 
 export class AuthService {
+  private authState = new BehaviorSubject<Object | null>(null);
+
+  readonly isLoggedIn$ = authState(this.auth);
 
   constructor(private readonly auth: Auth, private http: HttpClient) { }
 
