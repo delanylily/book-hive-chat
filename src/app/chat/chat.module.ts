@@ -1,0 +1,18 @@
+import { NgModule } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { ChatComponent } from './chat.component';
+import { ChatRoutingModule } from './chat-routing.module';
+import { TranslateModule } from '@ngx-translate/core';
+import { StreamChatModule, StreamAutocompleteTextareaModule } from 'stream-chat-angular';
+
+@NgModule({
+  imports: [
+    CommonModule,
+    ChatRoutingModule,
+    StreamChatModule,
+    StreamAutocompleteTextareaModule,
+    TranslateModule.forChild(),
+  ],
+  declarations: [ChatComponent]
+})
+export class ChatModule { }

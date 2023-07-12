@@ -1,0 +1,44 @@
+<div class="container-wrap">
+  <div class="auth-container">
+    <div class="heading">
+      <a class="logo">BookHive</a>
+      <h4>Register</h4>
+    </div>
+    <form class="auth-form" (ngSubmit)="register()" [formGroup]="registerForm">
+      <div class="form-group">
+        <label>Display name</label>
+        <input type="displayName" class="form-control" name="username" formControlName="displayName">
+        <div class="form-error" *ngIf="registerForm.controls['displayName'].hasError('minlength')">
+          <p *ngIf="registerForm.controls['displayName'].hasError('required')">* Display name is required </p>
+
+          <p *ngIf="registerForm.controls['displayName'].hasError('minlength')">* Display name should be at least 3
+            characters long
+          </p>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="exampleInputEmail1">Email</label>
+        <input type="email" class="form-control" name="email" formControlName="email">
+        <div class="form-error" *ngIf="registerForm?.get('email')?.hasError('required')">
+          <p *ngIf="registerForm.controls['email'].hasError('required')">* Email is required </p>
+          <p *ngIf="registerForm.controls['email'].hasError('email')">* Invalid email format</p>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="exampleInputPassword1">Password</label>
+        <input type="password" class="form-control" name="password" placeholder="Password" formControlName="password">
+        <div class="form-error" *ngIf="registerForm?.get('password')?.hasError('required')">
+
+          <!-- <div class="form-error" *ngIf="registerForm?.get('password').errors && registerForm?.get('password').dirty"> -->
+          <p *ngIf="registerForm.controls['password'].hasError('required')">* Password is required </p>
+          <p *ngIf="registerForm.controls['password'].hasError('password')">* Password should be at least 8 characters
+            long.
+          </p>
+        </div>
+      </div>
+      <button type="submit" class="btn-main submit">Register</button>
+      <span>or</span>
+      <a style="text-decoration: none;" href="/auth">Have an account? <span class="text-register">Login</span></a>
+    </form>
+  </div>
+</div>

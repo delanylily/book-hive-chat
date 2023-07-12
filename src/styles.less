@@ -1,1 +1,268 @@
-/* You can add global styles to this file, and also import other style files */
+@import url('/src/assets/styles/style-variables.less');
+@import 'stream-chat-angular/src/assets/styles/v2/scss/index.scss';
+
+html {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  height: 100%;
+}
+
+#root {
+  display: flex;
+  height: 100%;
+
+  stream-channel-list {
+    width: 30%;
+  }
+
+  stream-channel {
+    width: 100%;
+  }
+
+  stream-thread {
+    width: 45%;
+  }
+}
+
+
+html,
+body {
+  height: 100%;
+}
+
+.ng-toast {
+  align-items: center;
+}
+
+.ng-toast.success {
+  border-left: 8px solid @color-secondary !important;
+  background-color: @color-accent !important;
+}
+
+#close {
+  padding-top: 5px;
+}
+
+.fa-check-circle {
+  color: @color-secondary !important;
+}
+
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+.form-error p {
+  color: red !important;
+  padding-top: 5px;
+  margin-bottom: 5px;
+  font-size: 14px;
+}
+
+.form-control:focus {
+  border-color: @color-secondary;
+  box-shadow: 0 0 0 0.25rem @color-secondary;
+}
+
+.container-full-width {
+  background-color: @color-secondary;
+  padding: 15px;
+  color: white;
+  margin-bottom: 20px;
+
+  // & h6 {
+  //   color: white;
+  // }
+}
+
+.back {
+  background-color: white;
+  height: 35px;
+  position: fixed;
+  width: 100vw;
+  line-height: 35px;
+  padding-left: 10px;
+  color: @color-secondary;
+  top: 0;
+  margin-bottom: 15px;
+  box-shadow: @box-shadow;
+  display: grid;
+  grid-template-columns: 10px auto;
+  grid-column-gap: 10px;
+  align-items: center;
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.container-margin {
+  margin: 15px;
+}
+
+.user-details {
+  display: grid;
+  background-color: @main-blue;
+  grid-template-columns: 80px auto;
+  align-items: center;
+  padding: 15px;
+  grid-column-gap: 15px;
+  margin-top: 35px;
+}
+
+.name {
+  font-weight: 600;
+  font-size: @lengthSm3;
+}
+
+.description {
+  font-size: @lengthSm2;
+}
+
+.details {
+  display: grid;
+  grid-row-gap: 4px;
+}
+
+.container-full-width {
+  background-color: white;
+  color: @font-text;
+}
+
+.bookshelf {
+  width: 60px;
+  margin-bottom: 15px;
+}
+
+p {
+  color: @font-text;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+h3 {
+  font-size: @lengthMd2;
+  color: @font-text;
+}
+
+h4 {
+  font-size: @lengthMd2;
+}
+
+h5 {
+  font-size: @lengthMd2;
+}
+
+h6 {
+  font-size: @lengthMd1;
+  color: @font-label;
+}
+
+.length-sm-1 {
+  font-size: @lengthSm1;
+}
+
+.length-sm-2 {
+  font-size: @lengthSm2;
+}
+
+.length-sm-3 {
+  font-size: @lengthSm3;
+  line-height: 16px;
+}
+
+.spinner {
+  text-align: center;
+}
+
+.spinner-gif {
+  width: 40px;
+  opacity: 30%;
+}
+
+.modal {
+  display: none;
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  overflow-y: scroll;
+}
+
+
+.modal.open {
+  display: flex;
+  justify-content: center;
+  align-items: baseline;
+  padding: 20px;
+}
+
+.modal-info {
+  padding: 20px 20px 20px 20px;
+  place-items: center;
+  grid-row-gap: 15px;
+  display: grid;
+}
+
+.modal-content {
+  border-radius: 5px;
+  text-align: center;
+  z-index: 20;
+}
+
+.btn-default {
+  background-color: #ccc;
+  color: #fff;
+}
+
+.btn-highlight {
+  background-color: aquamarine;
+}
+
+.book-img {
+  // height: 115px;
+  // height: 70px;
+  border-radius: 4px;
+  box-shadow: @box-shadow;
+  overflow: hidden;
+}
+
+.user-img {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: white;
+  box-shadow: 1px 0 3px 1px #80808066;
+  overflow: hidden;
+
+  & img {
+    width: inherit;
+    height: inherit;
+    object-fit: cover;
+  }
+
+  & .fa-edit {
+    text-align: right;
+  }
+}
+
+.badge-main {
+  background-color: @color-secondary;
+  font-size: @lengthSm3;
+  margin-left: 5px;
+  border-radius: 6px;
+  padding: 3px 7px;
+  color: white;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}

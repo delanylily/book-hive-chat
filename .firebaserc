@@ -1,0 +1,14 @@
+{
+  "projects": {
+    "default": "book-hive-6dfe9"
+  },
+  "targets": {
+    "book-hive-6dfe9": {
+      "hosting": {
+        "stream-chat-test": [
+          "book-hive-6dfe9"
+        ]
+      }
+    }
+  }
+}
