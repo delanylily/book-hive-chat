@@ -1,0 +1,8 @@
+<div class="progress-container">
+  <step *ngFor="let step of steps" [steps]="step"></step>
+</div>
+<div class="step-details">
+  <step-card *ngFor="let step of steps" [step]="step"></step-card>
+</div>
+<button class="btn-nav-toggle prev" (click)="prev()"><i class="fa fa-chevron-left"></i></button>
+<button class="btn-nav-toggle next" (click)="next()"><i class="fa fa-chevron-right"></i></button>

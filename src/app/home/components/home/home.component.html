@@ -1,0 +1,22 @@
+<frame>
+  <div body class="container-fluid">
+    <div class="stepper-container no-gutters">
+      <ng-container *ngIf="!loading else spinner">
+        <ng-container *ngIf="filteredBooks?.length && filteredBooks else noBooks">
+          <stepper-container [data]="filteredBooks"></stepper-container>
+        </ng-container>
+        <ng-template #noBooks>
+          <div class="no-books">
+            <img class="bookshelf" src="../../../../assets/images/bookshelf.jpg" alt="">
+            <p>Your bookshelf is empty!</p>
+          </div>
+        </ng-template>
+      </ng-container>
+      <ng-template #spinner>
+        <div class="spinner">
+          <img class="spinner-gif" src="../../../../assets/icons/spinner.gif" alt="">
+        </div>
+      </ng-template>
+    </div>
+  </div>
+</frame>

@@ -1,0 +1,46 @@
+@import '../../../../assets/styles/style-variables.less';
+
+.book-card {
+  display: grid;
+  grid-template-rows: auto 200px auto;
+  place-items: center;
+  text-align: center;
+  grid-row-gap: 15px;
+  padding: 20px;
+  margin-bottom: 15vh;
+}
+
+.details {
+  display: grid;
+  grid-template-columns: 30px 70vw;
+  text-align: justify;
+  align-items: baseline;
+}
+
+i {
+  color: @font-text;
+
+}
+
+.fa {
+  font-size: 18px;
+}
+
+.btn-group-2 {
+  display: grid;
+  grid-template-columns: repeat(2, 130px);
+  justify-content: center;
+  grid-column-gap: 15px;
+  grid-template-rows: 100%;
+}
+
+.request-bar {
+  background: white;
+  box-shadow: @box-shadow;
+  position: fixed;
+  bottom: 0;
+  width: 100vw;
+  height: 70px;
+  display: grid;
+  align-items: center;
+}

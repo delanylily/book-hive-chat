@@ -3,6 +3,8 @@ import { RouterModule } from '@angular/router';
 import { redirectLoggedInTo, canActivate, redirectUnauthorizedTo } from '@angular/fire/auth-guard';
 
 const routes = [
+  { path: 'home', loadChildren: () => import('./home/books.module').then(m => m.BooksModule) },
+
   {
     path: 'auth',
     ...canActivate(() => redirectLoggedInTo(['chat'])),

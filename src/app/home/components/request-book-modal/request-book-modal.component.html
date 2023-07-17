@@ -1,0 +1,33 @@
+<div class="modal" [ngClass]="{'open': isOpen}">
+  <div class="modal-content">
+    <i (click)="toggleModal()" class="fa fa-close"></i>
+    <ng-container *ngIf="!matchDetails else successMatch">
+      <svg preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 250">
+        <path fill="#FFB319" fill-opacity="1"
+          d="M0,96L48,133.3C96,171,192,245,288,245.3C384,245,480,171,576,149.3C672,128,768,160,864,176C960,192,1056,192,1152,165.3C1248,139,1344,85,1392,58.7L1440,32L1440,0L1392,0C1344,0,1248,0,1152,0C1056,0,960,0,864,0C768,0,672,0,576,0C480,0,384,0,288,0C192,0,96,0,48,0L0,0Z">
+        </path>
+      </svg>
+      <div class="modal-info">
+        <img class="book-gif" src="../../../../assets//icons/book-gif.gif" alt="">
+        <p>This book is available to {{checkAvailability()}}, continue?</p>
+        <div class="btn-group btn-2">
+          <button class="btn-main submit" (click)="onConfirm()">Request</button>
+          <button class="btn-main btn-cancel" (click)="toggleModal()">Cancel</button>
+        </div>
+      </div>
+    </ng-container>
+    <ng-template #successMatch>
+      <div class="img-grid">
+        <img src="{{matchDetails?.userBook?.image}}" alt="">
+        <img src="{{matchDetails?.matchBook?.image}}" alt="">
+      </div>
+      <i class="fa fa-heart"></i>
+      <h2>It's a match!</h2>
+      <p>The owner of this book has requested your book "{{matchDetails?.userBook?.title}}"</p>
+      <div class="btn-group btn-2">
+        <button (click)="messageOwner()">Message book owner</button>
+        <button (click)="viewCollection()">View Owner's collection</button>
+      </div>
+    </ng-template>
+  </div>
+</div>

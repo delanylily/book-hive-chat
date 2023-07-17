@@ -1,0 +1,30 @@
+@import '../../../../assets/styles/style-variables.less';
+
+.circle-container {
+  width: 9px;
+  height: 9px;
+  background: @color-accent;
+  color: white;
+  margin: 3px;
+  text-align: center;
+  vertical-align: middle;
+  border-radius: 30px;
+
+  & span {
+    line-height: 50px;
+  }
+}
+
+.active {
+  background-color: @color-secondary;
+}
+
+.current-active {
+  width: 13px;
+  height: 13px;
+  border-radius: 50px;
+
+  & span {
+    line-height: 80px;
+  }
+}

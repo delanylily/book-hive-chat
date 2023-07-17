@@ -1,0 +1,28 @@
+<div class="book-card" *ngIf="setCurrentActive()">
+  <div>
+    <h3>{{step.value.data.title}}</h3>
+    <h6>{{step.value.data.author}}</h6>
+  </div>
+  <img class="book-img" src="{{step.value.data.image}}" alt="">
+  <div class="details">
+    <i class="fa fa-info-circle"></i>
+    <p>{{step.value.data.description | slice:0:300}}</p>
+  </div>
+  <div class="details">
+    <i class="fa fa-bookmark"></i>
+    <div>
+      <span *ngIf="step.value.data.availability === 'both' || step.value.data.availability === 'lend'"
+        class="badge-main">Borrow</span>
+      <span *ngIf="step.value.data.availability === 'both' || step.value.data.availability === 'swap'"
+        class="badge-main">Swap</span>
+    </div>
+  </div>
+  <div class="request-bar">
+    <div class="btn-group-2">
+      <button class="btn-main btn-icon submit" (click)="request()"> <i class="fa fa-book"></i> Request</button>
+      <button class="btn-main btn-icon outline" (click)="saveBook(step.value.data)"> <i class="fa fa-heart"></i>
+        Save</button>
+    </div>
+  </div>
+</div>
+<request-book-modal #modal [viewModel]="{book: step.value.data, user: userId }"></request-book-modal>
