@@ -1,0 +1,25 @@
+<nav class="main-nav">
+  <a class="logo" href="/home">BookHive</a>
+  <div class="menu">
+    <a routerLink="/home" routerLinkActive="active" class="menu-item">
+      <i class="fa fa-book"></i>
+      <span>Home</span>
+    </a>
+    <a routerLink="/matches" routerLinkActive="active" class="menu-item">
+      <i class="fa fa-heart"></i>
+      <span>Matches</span>
+    </a>
+    <a routerLink="/inbox" routerLinkActive="active" class="menu-item">
+      <i class="fa fa-inbox"></i>
+      <span>Inbox</span>
+    </a>
+    <a (click)="toggleDropdown()" routerLinkActive="active" class="menu-item user-menu">
+      <i class="fa fa-user"></i>
+      <span>You</span>
+      <ul [class.show]="isDropdownOpen" class="dropdown-menu">
+        <li routerLink="/user-profile">Profile</li>
+        <li (click)="logout()">Log out</li>
+      </ul>
+    </a>
+  </div>
+</nav>

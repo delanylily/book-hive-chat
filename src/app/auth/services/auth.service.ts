@@ -30,6 +30,16 @@ export class AuthService {
     return from(signInWithEmailAndPassword(this.auth, email, password));
   }
 
+  signOut() {
+    const user = this.auth.currentUser;
+    return from(this.auth.signOut()).pipe(
+      switchMap(() => this.http.post(
+        `${environment.apiUrl}/revokeStreamUserToken`,
+        { user }
+      ))
+    );
+  }
+
   signUp(registerForm: any): Observable<any> {
     const displayName = registerForm.displayName;
     return from(createUserWithEmailAndPassword(this.auth, registerForm.email, registerForm.password))

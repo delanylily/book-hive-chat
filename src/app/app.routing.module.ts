@@ -1,9 +1,18 @@
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
+import { redirectLoggedInTo, canActivate, redirectUnauthorizedTo } from '@angular/fire/auth-guard';
 
 const routes = [
-  { path: 'auth', loadChildren: () => import('./auth/auth.module').then(m => m.AuthModule) },
-  { path: 'chat', loadChildren: () => import('./chat/chat.module').then(m => m.ChatModule) },
+  {
+    path: 'auth',
+    ...canActivate(() => redirectLoggedInTo(['chat'])),
+    loadChildren: () => import('./auth/auth.module').then(m => m.AuthModule)
+  },
+  {
+    path: 'chat',
+    ...canActivate(() => redirectUnauthorizedTo(['signin'])),
+    loadChildren: () => import('./chat/chat.module').then(m => m.ChatModule)
+  },
 ];
 
 @NgModule({

@@ -1,16 +1,21 @@
-<section class="chat" *ngIf="chatIsReady$ | async; else unavailable">
-  <stream-channel-list></stream-channel-list>
-  <stream-channel>
-    <stream-channel-header></stream-channel-header>
-    <stream-message-list></stream-message-list>
-    <stream-notification-list></stream-notification-list>
-    <stream-message-input></stream-message-input>
-    <!-- <stream-thread name="thread">
+<frame>
+  <div body>
+    <app-new-channel (saved)="onCreate($event)"></app-new-channel>
+    <section class="chat" *ngIf="chatIsReady$ | async; else unavailable">
+      <stream-channel-list></stream-channel-list>
+      <stream-channel>
+        <stream-channel-header></stream-channel-header>
+        <stream-message-list></stream-message-list>
+        <stream-notification-list></stream-notification-list>
+        <stream-message-input></stream-message-input>
+        <!-- <stream-thread name="thread">
       <stream-message-list mode="thread"></stream-message-list>
       <stream-message-input mode="thread"></stream-message-input>
     </stream-thread> -->
-  </stream-channel>
-</section>
-<ng-template #unavailable>
-  <div class="chat-notification"> Chat is not available...</div>
-</ng-template>
+      </stream-channel>
+    </section>
+    <ng-template #unavailable>
+      <div class="chat-notification"> Chat is not available...</div>
+    </ng-template>
+  </div>
+</frame>
