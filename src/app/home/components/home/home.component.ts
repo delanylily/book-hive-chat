@@ -23,7 +23,6 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.dataService.getAllBooks().pipe(
       map(books => this.filterBooks(this.authService.getCurrentUser().uid, books)
       )).subscribe();
-
   }
 
   filterBooks(uid: any, books: any): void {

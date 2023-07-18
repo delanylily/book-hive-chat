@@ -9,6 +9,8 @@ import { provideAuth, getAuth } from '@angular/fire/auth';
 import { AuthModule } from './auth/auth.module';
 import { TranslateModule } from '@ngx-translate/core';
 import { ChatModule } from './chat/chat.module';
+import { Firestore } from 'firebase/firestore';
+import { getFirestore, provideFirestore } from '@angular/fire/firestore';
 @NgModule({
   declarations: [
     AppComponent
@@ -19,6 +21,7 @@ import { ChatModule } from './chat/chat.module';
     TranslateModule.forRoot(),
     AuthModule,
     ChatModule,
+    provideFirestore(() => getFirestore()),
     provideFirebaseApp(() => initializeApp(environment.firebase)),
     provideAuth(() => getAuth())
   ],
