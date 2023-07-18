@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { combineLatest, map, Subscription, take } from 'rxjs';
 import { Book } from '../../../models/book';
 import { DataService } from '../../../shared/data.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'request-book-modal',
@@ -19,7 +20,7 @@ export class RequestBookModalComponent implements OnDestroy {
   requestedBook: Book;
   matchDetails: any;
 
-  constructor(private readonly dataService: DataService, private router: Router) { }
+  constructor(private readonly dataService: DataService, private router: Router, private toastr: ToastrService) { }
 
   checkAvailability(): string {
     switch (this.viewModel?.book.availability) {
@@ -38,9 +39,7 @@ export class RequestBookModalComponent implements OnDestroy {
     this.requestedBook = this.viewModel.book;
     const reqBookOwnerId = this.viewModel.book.userId;
     this.dataService.addToRequested(this.viewModel.user, this.viewModel.book).subscribe(res => {
-      // this.toastService.success({ detail: "Book requested succesfully", summary: res.message, duration: 3000 });
-      alert({ detail: "Book requested succesfully", summary: res.message, duration: 3000 });
-
+      this.toastr.success("Book requested succesfully");
     });
     this.getUserRequests(reqBookOwnerId);
   }

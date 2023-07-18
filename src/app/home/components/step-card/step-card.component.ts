@@ -3,6 +3,7 @@ import { map, Subscription } from 'rxjs';
 import { AuthService } from '../../../auth/services/auth.service';
 import { RequestBookModalComponent } from '../request-book-modal/request-book-modal.component';
 import { DataService } from 'src/app/shared/data.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'step-card',
@@ -14,7 +15,7 @@ export class StepCardComponent implements OnInit {
   @ViewChild('modal') modal: RequestBookModalComponent;
   userId: string;
 
-  constructor(private readonly dataService: DataService, private readonly authService: AuthService) { }
+  constructor(private readonly dataService: DataService, private readonly authService: AuthService, private readonly toastr: ToastrService) { }
 
   ngOnInit() {
     this.userId = this.authService.getCurrentUser().uid;
@@ -30,13 +31,9 @@ export class StepCardComponent implements OnInit {
 
   saveBook(book) {
     this.dataService.addToSaved(this.userId, book).then(() => {
-      alert({ detail: "Book saved to your favourites!", duration: 3000 });
-
-      // this.toastService.success({ detail: "Book saved to your favourites!", duration: 3000 });
+      this.toastr.success('Book saved to your favourites!');
       this.dataService.favouriteAdded();
-    }, err => alert({ detail: err.message, summary: "An error occurred", duration: 5000 }));
-
-    // }, err => this.toastService.error({ detail: err.message, summary: "An error occurred", duration: 5000 }));
+    }, err => this.toastr.error(`An error occurred: ${err}`));
   }
 
   request() {

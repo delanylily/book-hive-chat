@@ -11,6 +11,9 @@ import { TranslateModule } from '@ngx-translate/core';
 import { ChatModule } from './chat/chat.module';
 import { Firestore } from 'firebase/firestore';
 import { getFirestore, provideFirestore } from '@angular/fire/firestore';
+import { ToastrModule, ToastrService } from 'ngx-toastr';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+
 @NgModule({
   declarations: [
     AppComponent
@@ -21,6 +24,8 @@ import { getFirestore, provideFirestore } from '@angular/fire/firestore';
     TranslateModule.forRoot(),
     AuthModule,
     ChatModule,
+    ToastrModule.forRoot(),
+    BrowserAnimationsModule,
     provideFirestore(() => getFirestore()),
     provideFirebaseApp(() => initializeApp(environment.firebase)),
     provideAuth(() => getAuth())

@@ -84,8 +84,9 @@ export class DataService {
   }
 
   addToRequested(userId: string, requestedBook: any): Observable<any> {
-    let collectionRef = doc(this.firestore, `/users/${userId}/requests`);
-    return from(setDoc(collectionRef, requestedBook));
+    let collectionRef = collection(this.firestore, `/users/${userId}/requests`);
+    return from(addDoc(collectionRef, requestedBook));
+
   }
 
   // updateBookAvailability(userId: string, bookId: string, availability: string): Observable<any> {
