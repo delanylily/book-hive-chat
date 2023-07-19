@@ -1,0 +1,47 @@
+<frame>
+  <div body>
+    <div *ngIf="user" class="container-full-width">
+      <h2>Welcome back, {{user?.displayName}}</h2>
+      <h6 *ngIf="matches?.length">here are your matches!</h6>
+      <h6 *ngIf="!matches?.length">You have no matches yet, come back later to see if one of your books has been
+        matched!
+      </h6>
+    </div>
+    <div *ngIf="matches?.length" class="matches">
+      <div *ngFor="let match of matches" class="match-card">
+        <div class="match-details">
+          <div class="book-details">
+            <img class="book-img" src="{{match.userBook.image}}" alt="">
+            <p class="length-sm-1">{{match.userBook.title}}</p>
+          </div>
+          <i class="fa fa-heart"></i>
+          <div class="book-details">
+            <img class="book-img" src="{{match.matchBook.image}}" alt="">
+            <p class="length-sm-1">{{match.matchBook.title}}</p>
+          </div>
+        </div>
+        <div class="btn-group btn-2">
+          <button class="btn-main submit large-btn">Message user</button>
+          <button class="btn-main outline large-btn" [routerLink]="['/user', match.matchBook.userId]">User's
+            collection</button>
+        </div>
+      </div>
+    </div>
+    <div class="container-margin">
+      <h6>Favourites</h6>
+      <div *ngIf="bookList else noFavourites" class="book-grid">
+        <book-card [cardSettings]="{delete: true, summary: true}" (onRequestBook)="onRequestBook($event)"
+          (bookDelete)="onBookDelete($event)" *ngFor="let book of bookList" [bookVM]="book"></book-card>
+      </div>
+      <ng-template #noFavourites>
+        <div class="no-favourites">
+          <img class="bookshelf" src="../../assets/images/bookshelf.jpg" alt="">
+          <h5>You have no books saved</h5>
+          <p class="length-sm-3">Register or login to save books to your favourites</p>
+          <button [routerLink]="['/home']" class="btn-main submit">Find Books</button>
+        </div>
+      </ng-template>
+    </div>
+    <request-book-modal #requestModal [viewModel]="requestedDetails"></request-book-modal>
+  </div>
+</frame>

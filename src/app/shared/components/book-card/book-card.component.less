@@ -1,0 +1,71 @@
+@import url('../../../../assets/styles/style-variables.less');
+@import url('../../../../assets/styles/buttons.less');
+
+.book-card {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  grid-column-gap: 8px;
+  box-shadow: 1px 1px 3px 1px #b2b1b140;
+  background-color: white;
+  padding: 10px;
+  align-items: center;
+  max-width: 380px;
+}
+
+.align-left {
+  justify-content: left !important;
+}
+
+.selected {
+  background-color: @main-clear-blue;
+}
+
+.toggle-group {
+  grid-column-gap: 0;
+  display: grid;
+  grid-template-columns: repeat(3, auto);
+}
+
+.square {
+  border-radius: 0 !important;
+}
+
+.details {
+  display: grid;
+  grid-row-gap: 5px;
+  font-size: @lengthSm3;
+}
+
+.badges {
+  margin-bottom: 5px;
+}
+
+.badge-main {
+  margin-left: 0;
+}
+
+i {
+  font-size: @lengthSm3;
+}
+
+.book-img {
+  width: 5em;
+  margin-bottom: 5px;
+}
+
+p {
+  margin: 0;
+  font-size: 12px;
+}
+
+.badge-main {
+  font-size: 11px;
+}
+
+.info {
+  display: grid;
+  grid-template-columns: repeat(2, auto);
+  align-items: center;
+  grid-column-gap: 7px;
+  justify-content: left;
+}

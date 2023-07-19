@@ -1,0 +1,10 @@
+<div *ngIf="bookSummaryDetails" class="modal" [ngClass]="{'open': isOpen}">
+  <div class="modal-content">
+    <i (click)="toggleModal()" class="fa fa-close"></i>
+    <h3>{{bookSummaryDetails.title}}</h3>
+    <p>{{bookSummaryDetails.author}}</p>
+    <div class="modal-info">
+      {{bookSummaryDetails.description}}
+    </div>
+  </div>
+</div>

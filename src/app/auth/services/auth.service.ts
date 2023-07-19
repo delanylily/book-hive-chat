@@ -1,20 +1,28 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { Router } from '@angular/router';
-import { authState, Auth, createUserWithEmailAndPassword, signInWithEmailAndPassword, GoogleAuthProvider, updateProfile } from '@angular/fire/auth';
+import { authState, Auth, createUserWithEmailAndPassword, signInWithEmailAndPassword, GoogleAuthProvider, updateProfile, onAuthStateChanged } from '@angular/fire/auth';
 import { BehaviorSubject, forkJoin, from, Observable, of, pluck, switchMap } from 'rxjs';
 
 import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
+import { Firestore, doc, setDoc } from '@angular/fire/firestore';
 @Injectable({
   providedIn: 'root'
 })
 
 export class AuthService {
+  firestore: Firestore = inject(Firestore);
   private authState = new BehaviorSubject<Object | null>(null);
+  userSubject: BehaviorSubject<any> = new BehaviorSubject<any>(null);
+  user$: Observable<any> = this.userSubject.asObservable();
 
   readonly isLoggedIn$ = authState(this.auth);
 
-  constructor(private readonly auth: Auth, private http: HttpClient) { }
+  constructor(private readonly auth: Auth, private http: HttpClient) {
+    onAuthStateChanged(this.auth, (user) => {
+      this.userSubject.next(user);
+    });
+  }
 
   getCurrentUser() {
     return this.auth.currentUser!;
@@ -44,13 +52,13 @@ export class AuthService {
     const displayName = registerForm.displayName;
     return from(createUserWithEmailAndPassword(this.auth, registerForm.email, registerForm.password))
       .pipe(
-        switchMap(({ user }) => forkJoin([
-          updateProfile(user, { displayName }),
-          this.http.post(
-            `${environment.apiUrl}/createStreamUser`,
-            { user: { ...user, displayName } })
-        ])),
+        switchMap(({ user }) => {
+          const uid = user.uid;
+          const userDocRef = doc(this.firestore, 'users', uid);
+          const updateUserDoc = setDoc(userDocRef, { ...registerForm, uid });
+          const updateUserProfile = updateProfile(user, { displayName });
+          return forkJoin([updateUserDoc, updateUserProfile]);
+        })
       );
   }
-
 }

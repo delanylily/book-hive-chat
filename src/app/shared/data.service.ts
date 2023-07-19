@@ -1,8 +1,9 @@
 import { inject, Injectable } from '@angular/core';
 
-import { from, map, Observable, Subject } from 'rxjs';
+import { from, map, Observable, Subject, switchMap, tap } from 'rxjs';
 import { Book } from '../models/book';
-import { addDoc, collection, collectionGroup, doc, Firestore, getDoc, getDocs, query, setDoc } from '@angular/fire/firestore';
+import { addDoc, collection, collectionGroup, deleteDoc, doc, Firestore, getDoc, getDocs, query, setDoc, where } from '@angular/fire/firestore';
+import { ToastrService } from 'ngx-toastr';
 
 @Injectable({
   providedIn: 'root'
@@ -20,7 +21,7 @@ export class DataService {
     image: '',
     availability: ''
   };
-  constructor() { }
+  constructor(private toastr: ToastrService) { }
 
   favouriteAdded() {
     this.onFavouriteAdded.next(null);
@@ -89,6 +90,37 @@ export class DataService {
 
   }
 
+  removeFromFavourites(userId: string, bookId: string): Observable<any> {
+    const collectionRef = collection(this.firestore, `/users/${userId}/favourites`);
+    const q = query(collectionRef, where('id', '==', bookId));
+
+    return from(getDocs(q)).pipe(
+      switchMap((querySnapshot) => {
+        const deleteObservables = querySnapshot.docs.map((doc) => deleteDoc(doc.ref));
+        return from(deleteObservables).pipe(
+          tap(() => {
+            this.toastr.success('Document successfully deleted!');
+          })
+        );
+      })
+    );
+  }
+
+  // removeFromFavourites(userId: string, bookId: string) {
+  //   let collectionRef = collection(this.firestore, `/users/${userId}/favourites`);
+  //   const q = query(collectionRef, where('id', '==', bookId));
+
+  //   return from(getDocs(q)).pipe(
+  //     switchMap((querySnapshot) => {
+  //       const deletePromises = querySnapshot.docs.map((doc) => deleteDoc(doc.ref));
+  //       return from(Promise.all(deletePromises));
+  //     }),
+  //     map(() => {
+  //       this.toastr.success('Document successfully deleted!');
+  //     })
+  //   );
+  // }
+
   // updateBookAvailability(userId: string, bookId: string, availability: string): Observable<any> {
   //   let collectionRef = this.firestore.collection('users').doc(userId).collection('books').doc(bookId);
   //   return from(collectionRef.update({ availability: availability }));
@@ -114,24 +146,7 @@ export class DataService {
   // //   return this.firestore.collection(`/users/${userId}/favourites`).snapshotChanges();
   // // }
 
-  // removeFromFavourites(userId: string, bookId: string) {
-  //   const collectionRef = this.firestore.collection(`/users/${userId}/favourites`);
-  //   const query = collectionRef.ref.where('id', '==', bookId);
-  //   query.get().then((querySnapshot) => {
-  //     querySnapshot.forEach((doc) => {
-  //       doc.ref.delete().then(() => {
-  //         alert({ detail: "Book removed from favourites", duration: 3000 });
 
-  //         // this.toastService.success({ detail: "Book removed from favourites", duration: 3000 });
-  //         setTimeout(() => {
-  //           location.reload();
-  //         }, 3000);
-  //       }).catch((error) => {
-  //         console.log(error);
-  //       });
-  //     });
-  //   });
-  // }
 
   // getBooks() {
   //   return this.firestore.collection('Books').snapshotChanges();

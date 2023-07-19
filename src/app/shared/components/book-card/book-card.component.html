@@ -1,0 +1,42 @@
+<div [class.selected]="cardSettings.active" *ngIf="bookVM" class="book-card">
+  <div class="img-col">
+    <img class="book-img" src="{{bookVM.image}}" alt="">
+  </div>
+  <div class="details">
+    <p class="length-sm-2">{{bookVM.title}}, <i>{{bookVM.author}}</i></p>
+    <div *ngIf="cardSettings?.requestOptions" class="info">
+      <i class="fa fa-bookmark"></i>
+      <div *ngIf="cardSettings?.requestOptions?.display else editRequest" class="badges">
+        <span *ngIf="bookVM.availability === 'both' || bookVM.availability === 'lend'" class="badge-main">Borrow</span>
+        <span *ngIf="bookVM.availability === 'bsoth' || bookVM.availability === 'swap'" class="badge-main">Swap</span>
+      </div>
+      <ng-template #editRequest>
+        <div class="toggle-group">
+          <button class="btn-main small square" [ngClass]="bookVM.availability === 'lend' ? 'submit' : 'outline'"
+            (click)="selectBookAvailability('lend', bookVM.id)">Lend</button>
+          <button class="btn-main small square" [ngClass]="bookVM.availability === 'swap' ? 'submit' : 'outline'"
+            (click)="selectBookAvailability('swap', bookVM.id)">Swap</button>
+          <button class="btn-main small square" [ngClass]="bookVM.availability === 'both' ? 'submit' : 'outline'"
+            (click)="selectBookAvailability('both', bookVM.id)">Both</button>
+        </div>
+      </ng-template>
+    </div>
+    <div *ngIf="cardSettings?.summary" class="info">
+      <i class="fa fa-info-circle"></i>
+      <a (click)="viewDetails({title: bookVM.title, author: bookVM.author, description: bookVM.description})">Book
+        summary</a>
+    </div>
+    <div *ngIf="cardSettings?.delete" class="info">
+      <i class="fa fa-trash"></i>
+      <a (click)="removeBook(bookVM.id, bookVM.userId)">Delete book</a>
+    </div>
+    <div class="request-bar">
+      <div [ngClass]="{'align-left' : !cardSettings.collection}" class="btn-group btn-2">
+        <button *ngIf="cardSettings?.request" (click)="requestBook()" class="btn-main submit small">Request</button>
+        <button *ngIf="cardSettings?.collection" [routerLink]="['/user', bookVM.userId]"
+          class="btn-main outline small">Collection</button>
+      </div>
+    </div>
+  </div>
+</div>
+<book-description-modal [bookSummaryDetails]="bookSummaryDetails" #modal></book-description-modal>
