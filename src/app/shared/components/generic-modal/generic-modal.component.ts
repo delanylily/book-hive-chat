@@ -6,9 +6,9 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
   styleUrls: ['./generic-modal.component.less', '../../../../assets/styles/buttons.less']
 })
 export class GenericModalComponent implements OnInit {
-  @Input() viewModel: { heading: string, message: string; bookcard: any; };
+  @Input() viewModel: { heading: string, message?: string; bookcard?: any; };
   @Output() onConfirmed: EventEmitter<null> = new EventEmitter<null>();
-  @Output() onAvailabilitySelection: EventEmitter<{ availability: string; }> = new EventEmitter<{ availability: ''; }>();
+  @Output() onAvailabilitySelection = new EventEmitter<{ availability: ''; }>();
   isOpen: boolean = false;
   constructor() { }
 

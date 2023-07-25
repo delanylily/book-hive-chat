@@ -38,7 +38,7 @@ export class InviteButtonComponent {
   }
 
   addToChat() {
-    this.channel.addMembers(['Bl1QTiivE9QKSYXxv6GFZL60jN73']);
+    this.channel.addMembers(['3hoU1vGWbNSMSnjwAg5LF5hwQaj2']);
   }
   // addToChat({ option: { value: userId } }: any) {
   //   this.channel.addMembers([userId]);

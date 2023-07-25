@@ -1,0 +1,13 @@
+<frame>
+  <div body>
+    <user-details *ngIf="user$ | async as user" [user]="user"></user-details>
+    <div class="container-full-width">
+      <div class="heading">
+        <h5 title>My collection</h5>
+        <button class="btn-main outline btn-icon" [routerLink]="['add-book']"><i class="fa fa-plus"></i>Add
+          book</button>
+      </div>
+    </div>
+    <user-collection *ngIf="user?.uid" [userId]="user?.uid"></user-collection>
+  </div>
+</frame>

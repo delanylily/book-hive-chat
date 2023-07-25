@@ -1,0 +1,6 @@
+<div *ngIf="(books$ | async) as booksItems" class="user-collection">
+  <book-card [cardSettings]="{delete: true, requestOptions: {edit: true}}"
+    (onRequestEdit)="selectBookAvailability($event)" (bookDelete)="onDeleteSelected(book)" *ngFor="let book of books"
+    [bookVM]="book"></book-card>
+</div>
+<generic-modal #modal (onConfirmed)="onDeleteBookConfirmation()" [viewModel]="modalContent"></generic-modal>

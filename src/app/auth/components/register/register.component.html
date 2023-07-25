@@ -8,9 +8,9 @@
       <div class="form-group">
         <label>Display name</label>
         <input type="displayName" class="form-control" name="username" formControlName="displayName">
-        <div class="form-error" *ngIf="registerForm.controls['displayName'].hasError('minlength')">
+        <div class="form-error"
+          *ngIf="registerForm.controls['displayName'].errors && registerForm.controls['displayName'].touched ">
           <p *ngIf="registerForm.controls['displayName'].hasError('required')">* Display name is required </p>
-
           <p *ngIf="registerForm.controls['displayName'].hasError('minlength')">* Display name should be at least 3
             characters long
           </p>
@@ -19,7 +19,7 @@
       <div class="form-group">
         <label for="exampleInputEmail1">Email</label>
         <input type="email" class="form-control" name="email" formControlName="email">
-        <div class="form-error" *ngIf="registerForm?.get('email')?.hasError('required')">
+        <div class="form-error" *ngIf="registerForm.controls['email'].errors && registerForm.controls['email'].touched">
           <p *ngIf="registerForm.controls['email'].hasError('required')">* Email is required </p>
           <p *ngIf="registerForm.controls['email'].hasError('email')">* Invalid email format</p>
         </div>
@@ -27,9 +27,8 @@
       <div class="form-group">
         <label for="exampleInputPassword1">Password</label>
         <input type="password" class="form-control" name="password" placeholder="Password" formControlName="password">
-        <div class="form-error" *ngIf="registerForm?.get('password')?.hasError('required')">
-
-          <!-- <div class="form-error" *ngIf="registerForm?.get('password').errors && registerForm?.get('password').dirty"> -->
+        <div class="form-error"
+          *ngIf="registerForm.controls['password'].errors && registerForm.controls['password'].touched">
           <p *ngIf="registerForm.controls['password'].hasError('required')">* Password is required </p>
           <p *ngIf="registerForm.controls['password'].hasError('password')">* Password should be at least 8 characters
             long.

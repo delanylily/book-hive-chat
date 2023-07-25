@@ -1,0 +1,37 @@
+.user-collection {
+  display: grid;
+  grid-template-columns: auto;
+  margin: 10px;
+  grid-gap: 10px;
+}
+
+.book-img {
+  width: 130px;
+  height: 180px;
+}
+
+.details {
+  display: grid;
+  grid-template-columns: repeat(2, auto);
+  justify-items: center;
+  grid-column-gap: 10px;
+}
+
+.btn-group-3 {
+  display: grid;
+  grid-template-columns: repeat(3, auto);
+  grid-column-gap: 2px;
+}
+
+
+@media(min-width: 375px) {
+  .user-collection {
+    grid-template-columns: repeat(2, min-content);
+  }
+}
+
+@media(min-width: 1135px) {
+  .user-collection {
+    grid-template-columns: repeat(4, min-content);
+  }
+}

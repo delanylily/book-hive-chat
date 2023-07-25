@@ -13,6 +13,8 @@ import { Firestore } from 'firebase/firestore';
 import { getFirestore, provideFirestore } from '@angular/fire/firestore';
 import { ToastrModule, ToastrService } from 'ngx-toastr';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { provideDatabase, getDatabase } from '@angular/fire/database';
+import { FirestoreModule } from '@angular/fire/firestore';
 
 @NgModule({
   declarations: [
@@ -26,9 +28,11 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     ChatModule,
     ToastrModule.forRoot(),
     BrowserAnimationsModule,
+    FirestoreModule,
     provideFirestore(() => getFirestore()),
     provideFirebaseApp(() => initializeApp(environment.firebase)),
-    provideAuth(() => getAuth())
+    provideAuth(() => getAuth()),
+    provideDatabase(() => getDatabase())
   ],
   providers: [],
   bootstrap: [AppComponent]

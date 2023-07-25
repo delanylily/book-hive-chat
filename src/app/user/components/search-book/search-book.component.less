@@ -1,0 +1,45 @@
+@import '../../../../assets/styles/style-variables.less';
+
+input {
+  height: 35px;
+}
+
+.search-heading {
+  display: grid;
+  grid-template-rows: repeat(2, auto);
+  grid-row-gap: 15px;
+}
+
+.book-container {
+  display: grid;
+  grid-template-columns: repeat(3, auto);
+  grid-gap: 15px;
+  margin-top: 15px;
+
+}
+
+.book-item {
+  display: grid;
+  grid-template-columns: repeat(2, auto);
+  grid-gap: 15px;
+
+  &:hover {
+    background-color: @main-clear-blue;
+  }
+}
+
+.book-selected {
+  background-color: @main-clear-blue;
+}
+
+@media(max-width: 1000px) {
+  .book-container {
+    grid-template-columns: repeat(2, auto);
+  }
+}
+
+@media(max-width: 800px) {
+  .book-container {
+    grid-template-columns: auto;
+  }
+}

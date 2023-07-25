@@ -1,0 +1,13 @@
+<div class="user-details">
+  <div class="user-img">
+    <img src="{{user.photoURL}}" alt="">
+  </div>
+  <div class="details">
+    <p class="name">{{user.displayName}}</p>
+    <p class="description">{{user.description}}</p>
+    <div class="edit">
+      <a (click)="onEdit()"><i class="fa fa-edit"></i>Edit profile</a>
+    </div>
+  </div>
+</div>
+<edit-profile-modal [userDetails]="user" #modal (onConfirmed)="onEditSaved($event)"></edit-profile-modal>

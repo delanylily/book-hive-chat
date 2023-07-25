@@ -21,7 +21,8 @@
           </div>
         </div>
         <div class="btn-group btn-2">
-          <button class="btn-main submit large-btn">Message user</button>
+          <button (click)="messageUser(match.matchBook.userId, match.matchBook)"
+            class="btn-main submit large-btn">Message user</button>
           <button class="btn-main outline large-btn" [routerLink]="['/user', match.matchBook.userId]">User's
             collection</button>
         </div>

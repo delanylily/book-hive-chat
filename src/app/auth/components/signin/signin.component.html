@@ -5,7 +5,7 @@
       <div class="form-group">
         <label for="exampleInputEmail1">Email</label>
         <input type="email" class="form-control" name="email" formControlName="email">
-        <div class="form-error" *ngIf="loginForm.controls['email'].hasError">
+        <div class="form-error" *ngIf="loginForm.controls['email'].errors && loginForm.controls['email'].touched">
           <p *ngIf="loginForm.controls['email'].hasError('required')">* Email is required </p>
           <p *ngIf="loginForm.controls['email'].hasError('email')">* Invalid email format</p>
         </div>
@@ -13,7 +13,7 @@
       <div class="form-group">
         <label for="exampleInputPassword1">Password</label>
         <input type="password" class="form-control" name="password" placeholder="Password" formControlName="password">
-        <div class="form-error" *ngIf="loginForm.controls['password'].hasError">
+        <div class="form-error" *ngIf="loginForm.controls['password'].errors && loginForm.controls['password'].touched">
           <p *ngIf="loginForm.controls['password'].hasError('required')">* Password is required </p>
           <p *ngIf="loginForm.controls['password'].hasError('minlength')">* Password should be at least 8 characters
             long.
@@ -25,7 +25,7 @@
       <!-- <button (click)="signInWithGoogle()" class="btn-icon btn-google">
         <img src="../../../assets/icons/google.png" height="24px" width="24px" alt=""> Sign In with Google
       </button> -->
-      <a [routerLink]="['register']" style="text-decoration: none;">Don't have an account? <span
+      <a [routerLink]="['/auth/register']" style="text-decoration: none;">Don't have an account? <span
           class="text-register">Register</span></a>
     </form>
   </div>

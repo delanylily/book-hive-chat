@@ -5,6 +5,10 @@ import { AuthService } from '../auth/services/auth.service';
 import { Book } from '../models/book';
 import { DataService } from '../shared/data.service';
 import { RequestBookModalComponent } from '../home/components/request-book-modal/request-book-modal.component';
+import { Channel } from 'stream-chat';
+import { ChatService } from '../shared/chat.service';
+import { UserService } from '../shared/user.service';
+import { DocumentData } from 'firebase/firestore';
 
 @Component({
   selector: 'app-matches',
@@ -24,7 +28,7 @@ export class MatchesComponent implements OnInit, OnDestroy {
   requestedDetails: { book: Book, user: string; };
   @ViewChild('requestModal') requestModal: RequestBookModalComponent;
 
-  constructor(private readonly router: Router, private readonly authService: AuthService, private readonly dataService: DataService) { }
+  constructor(private readonly userService: UserService, private readonly chatService: ChatService, private readonly router: Router, private readonly authService: AuthService, private readonly dataService: DataService) { }
 
   ngOnInit() {
     this.authService.user$.pipe(
@@ -46,6 +50,18 @@ export class MatchesComponent implements OnInit, OnDestroy {
   onRequestBook(book): void {
     this.requestedDetails = { book: book, user: this.userId };
     this.requestModal.toggleModal();
+  }
+
+  messageUser(userId: string, name: any) {
+    this.userService.getUserDetails(userId).then(res => {
+      const displayName = (res as DocumentData)['displayName'];
+      this.chatService.userChatInitiated.next({ userId: userId, name: displayName });
+      this.router.navigateByUrl('/chat');
+    });
+
+    // console.log(userId, 'matchBook');
+    // this.channel.addMembers([userId]);
+
   }
 
   onBookDelete(book) {

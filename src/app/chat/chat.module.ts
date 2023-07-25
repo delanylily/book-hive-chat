@@ -6,6 +6,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { StreamChatModule, StreamAutocompleteTextareaModule } from 'stream-chat-angular';
 import { ChannelsModule } from '../channels/channels.module';
 import { FrameModule } from '../frame/frame.module';
+import { InviteButtonComponent } from './invite-button/invite-button.component';
 
 @NgModule({
   imports: [
@@ -17,6 +18,6 @@ import { FrameModule } from '../frame/frame.module';
     StreamAutocompleteTextareaModule,
     TranslateModule.forChild(),
   ],
-  declarations: [ChatComponent]
+  declarations: [ChatComponent, InviteButtonComponent]
 })
 export class ChatModule { }

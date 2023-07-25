@@ -2,7 +2,7 @@ import { inject, Injectable } from '@angular/core';
 
 import { from, map, Observable, Subject, switchMap, tap } from 'rxjs';
 import { Book } from '../models/book';
-import { addDoc, collection, collectionGroup, deleteDoc, doc, Firestore, getDoc, getDocs, query, setDoc, where } from '@angular/fire/firestore';
+import { addDoc, collection, collectionGroup, deleteDoc, doc, Firestore, getDoc, getDocs, query, setDoc, updateDoc, where } from '@angular/fire/firestore';
 import { ToastrService } from 'ngx-toastr';
 
 @Injectable({
@@ -38,6 +38,12 @@ export class DataService {
     return setDoc(collectionRef, this.bookObj);
   }
 
+  // userData(userId: string) {
+  //   let collectionRef = collection(this.firestore, `/users/${userId}`);
+  //   const queryRef = query(collectionRef);
+  //   return this.getDocumentSnapshot(queryRef);
+  // }
+
   addToSaved(userId: string, book: Book) {
     let collectionRef = collection(this.firestore, `/users/${userId}/favourites`);
     return addDoc(collectionRef, book);
@@ -60,6 +66,22 @@ export class DataService {
     return this.getDocumentSnapshot(queryRef);
   }
 
+  // getUserBook(userId: string, bookId: string): Observable<any> {
+  //   return this.firestore.collection(`/users/${userId}/books`).doc(bookId).valueChanges();
+  // }
+
+  getUserBooks(userId: string) {
+    let collectionRef = collection(this.firestore, `/users/${userId}/books`);
+    const queryRef = query(collectionRef);
+    return this.getDocumentSnapshot(queryRef);
+  }
+
+  //   getBooksDocument(userId: string) {
+  //     let collectionRef = collection(this.firestore, `/users/${userId}/books`);
+
+  //   return this.firestore.collection(`/users/${userId}/books`).snapshotChanges();
+  // }
+
   getUserMatches(userId: string): Observable<any> {
     let collectionRef = collection(this.firestore, `/users/${userId}/matches`);
     const queryRef = query(collectionRef);
@@ -70,6 +92,11 @@ export class DataService {
     let collectionRef = collection(this.firestore, `/users/${userId}/requests`);
     const queryRef = query(collectionRef);
     return this.getDocumentSnapshot(queryRef);
+  }
+
+  updateBookAvailability(userId: string, bookId: string, availability: string): Observable<any> {
+    let docRef = doc(this.firestore, `/users/${userId}/books/${bookId}`);
+    return from(updateDoc(docRef, { availability: availability }));
   }
 
   getDocumentSnapshot(query) {
@@ -90,57 +117,45 @@ export class DataService {
 
   }
 
-  removeFromFavourites(userId: string, bookId: string): Observable<any> {
+  deleteUserBook(userId: string, bookId: string) {
+    let itemRef = doc(this.firestore, `/users/${userId}/books/${bookId}`);
+    return from(deleteDoc(itemRef));
+  }
+
+  removeFromFavourites(userId: string, bookId: string): any {
     const collectionRef = collection(this.firestore, `/users/${userId}/favourites`);
     const q = query(collectionRef, where('id', '==', bookId));
 
-    return from(getDocs(q)).pipe(
-      switchMap((querySnapshot) => {
-        const deleteObservables = querySnapshot.docs.map((doc) => deleteDoc(doc.ref));
-        return from(deleteObservables).pipe(
-          tap(() => {
-            this.toastr.success('Document successfully deleted!');
-          })
+    return from(getDocs(q)).subscribe((querySnapshot) => {
+      querySnapshot.forEach((doc) => {
+        const docRef = doc.ref;
+        from(deleteDoc(docRef)).subscribe(
+          () => {
+            this.toastr.success("Book removed from favourites");
+            setTimeout(() => {
+              location.reload();
+            }, 3000);
+          },
+          (error) => {
+            this.toastr.error(`Book removed from favourites${error}`);
+          }
         );
-      })
-    );
+      });
+    });
   }
-
-  // removeFromFavourites(userId: string, bookId: string) {
-  //   let collectionRef = collection(this.firestore, `/users/${userId}/favourites`);
-  //   const q = query(collectionRef, where('id', '==', bookId));
-
-  //   return from(getDocs(q)).pipe(
-  //     switchMap((querySnapshot) => {
-  //       const deletePromises = querySnapshot.docs.map((doc) => deleteDoc(doc.ref));
-  //       return from(Promise.all(deletePromises));
-  //     }),
-  //     map(() => {
-  //       this.toastr.success('Document successfully deleted!');
-  //     })
-  //   );
-  // }
-
-  // updateBookAvailability(userId: string, bookId: string, availability: string): Observable<any> {
-  //   let collectionRef = this.firestore.collection('users').doc(userId).collection('books').doc(bookId);
-  //   return from(collectionRef.update({ availability: availability }));
-  // }
-
-  // // getBooksDocument(userId) {
-  // //   return this.firestore.collection(`/users/${userId}/books`).snapshotChanges();
-  // // }
-
-  // getUserBooks(userId: string) {
-  //   return this.firestore.collection(`/users/${userId}/books`).valueChanges();
-  // }
+}
 
 
 
 
-  // deleteUserBook(userId: string, bookId: string) {
-  //   const itemRef = this.firestore.doc(`/users/${userId}/books/${bookId}`);
-  //   return itemRef.delete();
-  // }
+
+
+
+
+
+
+
+
 
   // // getFavouritesDocument(userId) {
   // //   return this.firestore.collection(`/users/${userId}/favourites`).snapshotChanges();
@@ -214,9 +229,7 @@ export class DataService {
 
 
 
-  // getUserBook(userId: string, bookId: string): Observable<any> {
-  //   return this.firestore.collection(`/users/${userId}/books`).doc(bookId).valueChanges();
-  // }
+
 
 
 
@@ -273,7 +286,7 @@ export class DataService {
   // deleteBook(book: Book) {
   //   return this.firestore.doc('/Books/' + book.id).delete();
   // }
-}
+
 
 
 

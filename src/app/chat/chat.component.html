@@ -1,21 +1,47 @@
 <frame>
   <div body>
     <app-new-channel (saved)="onCreate($event)"></app-new-channel>
+    <ng-template #channelActionsTemplate let-channel="channel">
+    </ng-template>
     <section class="chat" *ngIf="chatIsReady$ | async; else unavailable">
-      <stream-channel-list></stream-channel-list>
-      <stream-channel>
-        <stream-channel-header></stream-channel-header>
+      <stream-channel-list (click)="isMenuOpen = false" [ngClass]="isMenuOpen ? 'menu-open' : 'menu-close'"
+        class="channel-list"></stream-channel-list>
+      <stream-channel [ngClass]="isMenuOpen ? 'preview-hide' : 'preview-display'" class="channel">
+        <stream-channel-header>
+          <button class="menu-button" (click)="isMenuOpen = !isMenuOpen">
+            <svg width="16px" height="10px" viewBox="0 0 16 10" version="1.1" xmlns="http://www.w3.org/2000/svg"
+              xmlns:xlink="http://www.w3.org/1999/xlink">
+              <title>Path</title>
+              <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                <path
+                  d="M15.5,1.68 L15.5,0 L0.5,0 L0.5,1.68 L15.5,1.68 Z M15.5,5.82 L15.5,4.18 L0.5,4.18 L0.5,5.82 L15.5,5.82 Z M15.5,10 L15.5,8.32 L0.5,8.32 L0.5,10 L15.5,10 Z"
+                  id="" fill="#000000" fill-rule="nonzero"></path>
+              </g>
+            </svg>
+          </button>
+        </stream-channel-header>
         <stream-message-list></stream-message-list>
         <stream-notification-list></stream-notification-list>
         <stream-message-input></stream-message-input>
-        <!-- <stream-thread name="thread">
-      <stream-message-list mode="thread"></stream-message-list>
-      <stream-message-input mode="thread"></stream-message-input>
-    </stream-thread> -->
+        <stream-thread name="thread" class="thread">
+          <stream-message-list mode="thread"></stream-message-list>
+          <stream-message-input mode="thread"></stream-message-input>
+        </stream-thread>
       </stream-channel>
     </section>
     <ng-template #unavailable>
       <div class="chat-notification"> Chat is not available...</div>
     </ng-template>
+
+    <!-- <ng-template #channelPreview let-channel="channel">
+      <section (click)="activateChannel(channel)">
+        <h1>{{channel.data?.name}}</h1>
+        <div>{{channel?.state?.messages.at(-1)?.text}}</div>
+      </section>
+    </ng-template> -->
+
+    <!-- <ng-template #channelActionsTemplate let-channel="channel">
+      <app-invite-button [channel]="channel"></app-invite-button>
+    </ng-template> -->
   </div>
 </frame>

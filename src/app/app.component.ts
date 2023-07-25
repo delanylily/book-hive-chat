@@ -1,6 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { AuthService } from './auth/services/auth.service';
 import { Router } from '@angular/router';
+import { Firestore } from '@angular/fire/firestore';
 
 @Component({
   selector: 'app-root',
@@ -9,7 +10,7 @@ import { Router } from '@angular/router';
 })
 export class AppComponent {
   title = 'stream-chat-test';
-
+  firestore: Firestore = inject(Firestore);
   constructor(public auth: AuthService, private router: Router) { }
 
   // signOut() {

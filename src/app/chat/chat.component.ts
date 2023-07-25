@@ -2,7 +2,9 @@ import { AfterViewInit, Component, OnInit, TemplateRef, ViewChild } from '@angul
 import { Observable, catchError, from, map, of, switchMap } from 'rxjs';
 import { AuthService } from 'src/app/auth/services/auth.service';
 import { environment } from 'src/environments/environment';
-import { ChannelActionsContext, ChannelService, ChatClientService, CustomTemplatesService, StreamI18nService } from 'stream-chat-angular';
+import { Channel } from 'stream-chat';
+import { ChannelActionsContext, ChannelPreviewContext, ChannelService, ChatClientService, CustomTemplatesService, DefaultStreamChatGenerics, StreamI18nService } from 'stream-chat-angular';
+import { ChatService } from '../shared/chat.service';
 
 @Component({
   selector: 'app-chat',
@@ -11,19 +13,27 @@ import { ChannelActionsContext, ChannelService, ChatClientService, CustomTemplat
 })
 export class ChatComponent implements OnInit, AfterViewInit {
   chatIsReady$!: Observable<boolean>;
+  userId: string;
+  channel: any;
+  isMenuOpen = true;
+  userChatInitiated: { userId: string, name: string; };
+  @ViewChild('channelPreview') private channelPreview!: TemplateRef<ChannelPreviewContext>;
   @ViewChild('channelActionsTemplate') private channelActionsTemplate: TemplateRef<ChannelActionsContext>;
+
   constructor(
+    private chatService: ChatService,
     private auth: AuthService,
-    private chatService: ChatClientService,
+    private chatClientService: ChatClientService,
     private channelService: ChannelService,
     private streamI18nService: StreamI18nService,
     private customTemplatesService: CustomTemplatesService
   ) { }
 
   ngOnInit(): void {
+    this.userId = this.auth.getCurrentUser().uid;
     this.streamI18nService.setTranslation();
     this.chatIsReady$ = this.auth.getStreamToken().pipe(
-      switchMap((streamToken) => this.chatService.init(
+      switchMap((streamToken) => this.chatClientService.init(
         environment.stream.key,
         this.auth.getCurrentUser().uid,
         streamToken
@@ -38,21 +48,37 @@ export class ChatComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
+    this.customTemplatesService.channelPreviewTemplate$.next(
+      this.channelPreview
+    );
     this.customTemplatesService.channelActionsTemplate$.next(
       this.channelActionsTemplate
     );
+    this.chatService.userChatInitiated.subscribe(res => {
+      if (res.userId.length) {
+        this.userChatInitiated = {
+          userId: res.userId,
+          name: res.name
+        };
+        this.onCreate(this.userChatInitiated.name);
+      }
+    });
   }
 
   onCreate(name: string) {
     const dasherizedName = name.replace(/\s+/g, '-').toLowerCase();
-    const channel = this.chatService.chatClient.channel(
+    this.channel = this.chatClientService.chatClient.channel(
       'messaging',
       dasherizedName,
       {
         name,
-        members: [this.auth.getCurrentUser().uid]
+        members: [this.auth.getCurrentUser().uid, this.userChatInitiated.userId]
       });
-    from(channel.create());
+
+    from(this.channel.create());
   }
 
+  activateChannel(channel: Channel<DefaultStreamChatGenerics>) {
+    this.channelService.setAsActiveChannel(channel);
+  }
 }

@@ -2,6 +2,7 @@ import { Component, OnDestroy } from '@angular/core';
 import { AuthService } from '../auth/services/auth.service';
 import { Router } from '@angular/router';
 import { Subscription, tap } from 'rxjs';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'header',
@@ -13,7 +14,7 @@ export class HeaderComponent implements OnDestroy {
   isDropdownOpen = false;
   signOutSubscription: Subscription;
 
-  constructor(private readonly auth: AuthService, private router: Router) { }
+  constructor(private readonly auth: AuthService, private router: Router, private toastr: ToastrService) { }
 
   toggleDropdown(): void {
     this.isDropdownOpen = !this.isDropdownOpen;
@@ -22,11 +23,11 @@ export class HeaderComponent implements OnDestroy {
   logout(): void {
     this.signOutSubscription = this.auth.signOut().pipe(
       tap(() => {
-        this.router.navigate(['/auth/register']);
-        // this.toastService.success({ detail: "Logout success", duration: 3000 });
+        this.router.navigate(['/auth/signin']);
+        this.toastr.success("Logout success");
       })
     ).subscribe({
-      // error: err => this.toastService.error({ detail: err.message, summary: "Logout failed", duration: 5000 })
+      error: err => this.toastr.error("Logout failed")
     });
   }
 

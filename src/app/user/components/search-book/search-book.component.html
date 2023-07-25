@@ -1,0 +1,15 @@
+<div class="search-container">
+  <div class="search-heading">
+    <input (input)="eventHandler($event)" type="text" placeholder="Search book...">
+    <button [disabled]="!selectedBook" (click)="modal.toggleModal()" class="btn-main submit">Add book to list</button>
+  </div>
+  <div *ngIf="loading" class="spinner">
+    <img class="spinner-gif" src="../../../../assets/icons/spinner.gif" alt="">
+  </div>
+  <div class="book-container">
+    <book-card [cardSettings]="{summary: true, active: i === activeBook}" *ngFor="let book of books; index as i"
+      (click)="bookSelected(book, i)" [bookVM]="book"></book-card>
+  </div>
+</div>
+<generic-modal #modal (onAvailabilitySelection)="onAvailabilitySelected($event)" (onConfirmed)="onBookSaved()"
+  [viewModel]="{heading: 'Confirm to collection', bookcard: selectedBook}"></generic-modal>
