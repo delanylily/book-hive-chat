@@ -1,35 +1,33 @@
-import { ChangeDetectorRef, Component, Input, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, Component, Input, OnInit, ViewChild } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
 import { User } from 'src/app/models/user';
-import { GenericModalComponent } from 'src/app/shared/components/generic-modal/generic-modal.component';
 import { UserService } from 'src/app/shared/user.service';
 import { getDownloadURL, getStorage, ref, uploadBytes, uploadBytesResumable } from "firebase/storage";
 import { initializeApp } from 'firebase/app';
 import { environment } from 'src/environments/environment';
+import { EditProfileModalComponent } from '../edit-profile-modal/edit-profile-modal.component';
 @Component({
   selector: 'user-details',
   templateUrl: './user-details.component.html',
   styleUrls: ['./user-details.component.less']
 })
-export class UserDetailsComponent implements OnInit {
-  // fileData: File = null;
+export class UserDetailsComponent {
   app = initializeApp(environment.firebase);
   storage = getStorage(this.app);
   fileData: File;
   editingForm: boolean;
   @Input() user: User;
-  @ViewChild('modal') modal: GenericModalComponent;
+  @ViewChild('modal', { static: true }) modal: EditProfileModalComponent;
+
   modalContent: { heading: string, message: string; };
   imageUrl: string;
   userForm: any;
+  modalOpen: boolean = false;
 
   constructor(private userService: UserService, private readonly toastService: ToastrService) { }
 
-  ngOnInit() {
-    console.log(this.user, 'user');
-  }
-
   onEdit(): void {
+    this.modalOpen = true;
     this.modal.toggleModal();
   }
 

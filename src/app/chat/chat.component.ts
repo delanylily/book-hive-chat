@@ -1,5 +1,5 @@
-import { AfterViewInit, Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
-import { Observable, catchError, from, map, of, switchMap } from 'rxjs';
+import { AfterViewInit, Component, OnDestroy, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import { Observable, Subscription, catchError, from, map, of, switchMap } from 'rxjs';
 import { AuthService } from 'src/app/auth/services/auth.service';
 import { environment } from 'src/environments/environment';
 import { Channel } from 'stream-chat';
@@ -11,11 +11,11 @@ import { ChatService } from '../shared/chat.service';
   templateUrl: './chat.component.html',
   styleUrls: ['./chat.component.scss']
 })
-export class ChatComponent implements OnInit, AfterViewInit {
+export class ChatComponent implements OnInit, AfterViewInit, OnDestroy {
   chatIsReady$!: Observable<boolean>;
   userId: string;
-  channel: any;
   isMenuOpen = true;
+  chatInitializationSubscription: Subscription;
   userChatInitiated: { userId: string, name: string; };
   @ViewChild('channelPreview') private channelPreview!: TemplateRef<ChannelPreviewContext>;
   @ViewChild('channelActionsTemplate') private channelActionsTemplate: TemplateRef<ChannelActionsContext>;
@@ -54,7 +54,7 @@ export class ChatComponent implements OnInit, AfterViewInit {
     this.customTemplatesService.channelActionsTemplate$.next(
       this.channelActionsTemplate
     );
-    this.chatService.userChatInitiated.subscribe(res => {
+    this.chatInitializationSubscription = this.chatService.userChatInitiated.subscribe(res => {
       if (res.userId.length) {
         this.userChatInitiated = {
           userId: res.userId,
@@ -67,7 +67,7 @@ export class ChatComponent implements OnInit, AfterViewInit {
 
   onCreate(name: string) {
     const dasherizedName = name.replace(/\s+/g, '-').toLowerCase();
-    this.channel = this.chatClientService.chatClient.channel(
+    const channel = this.chatClientService.chatClient.channel(
       'messaging',
       dasherizedName,
       {
@@ -75,10 +75,17 @@ export class ChatComponent implements OnInit, AfterViewInit {
         members: [this.auth.getCurrentUser().uid, this.userChatInitiated.userId]
       });
 
-    from(this.channel.create());
+    from(channel.create());
+    this.activateChannel(channel);
   }
 
   activateChannel(channel: Channel<DefaultStreamChatGenerics>) {
     this.channelService.setAsActiveChannel(channel);
+  }
+
+  ngOnDestroy(): void {
+    if (this.chatInitializationSubscription) {
+      this.chatInitializationSubscription.unsubscribe();
+    }
   }
 }

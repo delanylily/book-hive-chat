@@ -52,17 +52,18 @@ export class MatchesComponent implements OnInit, OnDestroy {
     this.requestModal.toggleModal();
   }
 
-  messageUser(userId: string, name: any) {
-    this.userService.getUserDetails(userId).then(res => {
-      const displayName = (res as DocumentData)['displayName'];
-      this.chatService.userChatInitiated.next({ userId: userId, name: displayName });
-      this.router.navigateByUrl('/chat');
-    });
-
-    // console.log(userId, 'matchBook');
-    // this.channel.addMembers([userId]);
-
+  messageUser(matchBook: any, userBook: any) {
+    console.log(matchBook, 'match', userBook, 'user');
   }
+
+  // messageUser(userId: string, name: any) {
+  //   this.userService.getUserDetails(userId).then(res => {
+  //     const displayName = (res as DocumentData)['displayName'];
+  //     this.chatService.userChatInitiated.next({ userId: userId, name: displayName });
+  //     this.router.navigateByUrl('/chat');
+  //   })
+  //     .catch((error) => console.log('Error occured:', error));
+  // }
 
   onBookDelete(book) {
     this.dataService.removeFromFavourites(this.userId, book.bookId);

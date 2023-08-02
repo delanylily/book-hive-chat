@@ -29,6 +29,7 @@ export class BookCardComponent implements OnInit {
 
   selectBookAvailability(event: string, bookId: string) {
     this.onRequestEdit.emit({ bookAvailability: event, bookId: bookId });
+    this.bookVM.availability = event;
   }
 
   removeBook(bookId, userId): void {

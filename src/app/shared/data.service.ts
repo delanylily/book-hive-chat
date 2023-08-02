@@ -26,7 +26,6 @@ export class DataService {
   favouriteAdded() {
     this.onFavouriteAdded.next(null);
   }
-
   addBookWithId(book: Book, userId: string) {
     this.bookObj.title = book.title;
     this.bookObj.userId = userId;
@@ -34,9 +33,14 @@ export class DataService {
     this.bookObj.description = book.description !== undefined ? book.description : '';
     this.bookObj.image = book.image;
     this.bookObj.availability = book.availability;
-    let collectionRef = doc(this.firestore, `/users/${userId}/books`);
-    return setDoc(collectionRef, this.bookObj);
+    let collectionRef = collection(this.firestore, `/users/${userId}/books`);
+    return addDoc(collectionRef, this.bookObj)
+      .then((docRef) => {
+        let docReference = doc(this.firestore, `/users/${userId}/books/${docRef.id}`);
+        return from(updateDoc(docReference, { id: docRef.id }));
+      });
   }
+
 
   // userData(userId: string) {
   //   let collectionRef = collection(this.firestore, `/users/${userId}`);
@@ -44,9 +48,9 @@ export class DataService {
   //   return this.getDocumentSnapshot(queryRef);
   // }
 
-  addToSaved(userId: string, book: Book) {
+  addToSaved(userId: string, book: Book): Observable<any> {
     let collectionRef = collection(this.firestore, `/users/${userId}/favourites`);
-    return addDoc(collectionRef, book);
+    return from(addDoc(collectionRef, book));
   }
 
   addToMatches(userId: string, matchDetails: any): Observable<any> {
@@ -70,10 +74,10 @@ export class DataService {
   //   return this.firestore.collection(`/users/${userId}/books`).doc(bookId).valueChanges();
   // }
 
-  getUserBooks(userId: string) {
+  getUserBooks(userId: string): Observable<any> {
     let collectionRef = collection(this.firestore, `/users/${userId}/books`);
     const queryRef = query(collectionRef);
-    return this.getDocumentSnapshot(queryRef);
+    return from(this.getDocumentSnapshot(queryRef));
   }
 
   //   getBooksDocument(userId: string) {
@@ -114,12 +118,34 @@ export class DataService {
   addToRequested(userId: string, requestedBook: any): Observable<any> {
     let collectionRef = collection(this.firestore, `/users/${userId}/requests`);
     return from(addDoc(collectionRef, requestedBook));
-
   }
 
   deleteUserBook(userId: string, bookId: string) {
+    this.removeFromMatches(userId, bookId);
     let itemRef = doc(this.firestore, `/users/${userId}/books/${bookId}`);
     return from(deleteDoc(itemRef));
+  }
+
+  removeFromMatches(userId: string, bookId: string): any {
+    const collectionRef = collection(this.firestore, `/users/${userId}/matches`);
+    const q = query(collectionRef, where('userBook.id', '==', bookId));
+
+    return from(getDocs(q)).subscribe((querySnapshot) => {
+      querySnapshot.forEach((doc) => {
+        const docRef = doc.ref;
+        from(deleteDoc(docRef)).subscribe(
+          () => {
+            this.toastr.success("Book removed from matches");
+            setTimeout(() => {
+              location.reload();
+            }, 3000);
+          },
+          (error) => {
+            this.toastr.error(`Book removed from matches${error}`);
+          }
+        );
+      });
+    });
   }
 
   removeFromFavourites(userId: string, bookId: string): any {

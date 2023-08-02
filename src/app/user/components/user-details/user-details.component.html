@@ -10,4 +10,5 @@
     </div>
   </div>
 </div>
-<edit-profile-modal [userDetails]="user" #modal (onConfirmed)="onEditSaved($event)"></edit-profile-modal>
+<edit-profile-modal [ngClass]="modalOpen ? 'modal-visible' : 'modal-hide'" #modal [userDetails]="user"
+  (onConfirmed)="onEditSaved($event)"></edit-profile-modal>

@@ -10,11 +10,9 @@ export class EditProfileModalComponent implements OnInit {
   @Output() onConfirmed: EventEmitter<any> = new EventEmitter<any>();
   @Input() userDetails: any;
   isOpen: boolean = false;
-  // fileData: File = null;
   fileData: File;
-
   userForm = new FormGroup({
-    photoUrl: new FormControl(''),
+    photoUrl: new FormControl(),
     displayName: new FormControl(''),
     description: new FormControl('')
   });
@@ -22,15 +20,20 @@ export class EditProfileModalComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
+    console.log(this.userDetails, 'userDetails');
     this.userForm = new FormGroup({
-      photoUrl: new FormControl(this.userDetails.photoURL),
+      photoUrl: new FormControl(this.userDetails.photoUrl),
       displayName: new FormControl(this.userDetails.displayName),
       description: new FormControl(this.userDetails.description)
     });
   }
 
   onConfirm() {
-    this.onConfirmed.emit({ form: this.userForm, fileData: this.fileData });
+    if (this.fileData) {
+      this.onConfirmed.emit({ form: this.userForm, fileData: this.fileData });
+    } else {
+      this.onConfirmed.emit({ form: this.userForm });
+    }
   }
 
   onFileSelected(event): void {
