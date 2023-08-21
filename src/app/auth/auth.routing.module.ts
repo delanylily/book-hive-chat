@@ -6,7 +6,7 @@ import { SigninComponent } from "./components/signin/signin.component";
 type PathMatch = "full" | "prefix" | undefined;
 
 const routes = [
-  { path: '', redirectTo: 'auth', pathMatch: 'full' as PathMatch },
+  { path: '', redirectTo: 'signin', pathMatch: 'full' as PathMatch },
   { path: 'signin', component: SigninComponent },
   { path: 'register', component: RegisterComponent },
 ];

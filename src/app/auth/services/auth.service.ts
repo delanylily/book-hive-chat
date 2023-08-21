@@ -18,7 +18,8 @@ export class AuthService {
 
   readonly isLoggedIn$ = authState(this.auth);
 
-  constructor(private readonly auth: Auth, private http: HttpClient) {
+  constructor(private readonly auth: Auth, private readonly http: HttpClient) {
+
     onAuthStateChanged(this.auth, (user) => {
       this.userSubject.next(user);
     });

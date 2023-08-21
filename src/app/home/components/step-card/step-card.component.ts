@@ -34,10 +34,6 @@ export class StepCardComponent implements OnInit {
       this.dataService.addToSaved(this.userId, book).subscribe(() => {
         this.toastr.success('Book saved to your favourites!');
       }, err => this.toastr.error(`An error occurred: ${err}`));
-      // this.dataService.addToSaved(this.userId, book).then(() => {
-      //   this.toastr.success('Book saved to your favourites!');
-      //   this.dataService.favouriteAdded();
-      // }).catch(err => this.toastr.error(`An error occurred: ${err}`));
     }
   }
 

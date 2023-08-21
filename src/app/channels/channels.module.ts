@@ -3,8 +3,6 @@ import { CommonModule } from '@angular/common';
 import { NewChannelComponent } from './new-channel/new-channel.component';
 import { ReactiveFormsModule } from '@angular/forms';
 
-
-
 @NgModule({
   declarations: [
     NewChannelComponent,

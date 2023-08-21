@@ -14,7 +14,7 @@ export class RegisterComponent implements OnDestroy {
   registerForm: FormGroup;
   registerSubscription: Subscription;
 
-  constructor(private auth: AuthService, private router: Router) {
+  constructor(private readonly auth: AuthService, private readonly router: Router) {
     this.registerForm = new FormGroup({
       displayName: new FormControl('', [Validators.required, Validators.minLength(3)]),
       email: new FormControl('', [Validators.required, Validators.email]),
@@ -24,13 +24,11 @@ export class RegisterComponent implements OnDestroy {
 
   register(): void {
     if (this.registerForm.valid) {
-      this.registerSubscription = this.auth.signUp(this.registerForm.value).subscribe({
-        next: () => this.router.navigate(['/chat']),
-        error: (error) => alert({ detail: error.message, summary: "Registration failed", duration: 5000 })
-      });
+      this.registerSubscription = this.auth.signUp(this.registerForm.value).subscribe(() => {
+        this.router.navigate(['/home']);
+      }, error => alert(error.message));
     }
   }
-
 
   ngOnDestroy(): void {
     if (this.registerSubscription) {

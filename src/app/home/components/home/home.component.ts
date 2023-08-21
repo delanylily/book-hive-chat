@@ -20,9 +20,7 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.loading = true;
-    this.dataService.getAllBooks().pipe(
-      map(books => this.filterBooks(this.authService.getCurrentUser().uid, books)
-      )).subscribe();
+    this.dataService.getAllBooks().pipe(map(books => this.filterBooks(this.authService.getCurrentUser().uid, books))).subscribe();
   }
 
   filterBooks(uid: any, books: any): void {

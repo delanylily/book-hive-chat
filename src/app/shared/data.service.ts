@@ -58,11 +58,7 @@ export class DataService {
     return from(addDoc(collectionRef, matchDetails));
   }
 
-  getAllBooks(): Observable<any> {
-    let collectionGroupRef = collectionGroup(this.firestore, `books`);
-    const queryRef = query(collectionGroupRef);
-    return this.getDocumentSnapshot(queryRef);
-  }
+
 
   getUserFavourites(userId: string): Observable<any> {
     let collectionRef = collection(this.firestore, `/users/${userId}/favourites`);
@@ -80,11 +76,11 @@ export class DataService {
     return from(this.getDocumentSnapshot(queryRef));
   }
 
-  //   getBooksDocument(userId: string) {
-  //     let collectionRef = collection(this.firestore, `/users/${userId}/books`);
-
-  //   return this.firestore.collection(`/users/${userId}/books`).snapshotChanges();
-  // }
+  getBooksDocument(userId: string) {
+    let collectionRef = collection(this.firestore, `/users/${userId}/books`);
+    const queryRef = query(collectionRef);
+    return from(this.getDocumentSnapshot(queryRef));
+  }
 
   getUserMatches(userId: string): Observable<any> {
     let collectionRef = collection(this.firestore, `/users/${userId}/matches`);
@@ -121,32 +117,54 @@ export class DataService {
   }
 
   deleteUserBook(userId: string, bookId: string) {
-    this.removeFromMatches(userId, bookId);
+    // this.removeFromMatches(userId, bookId);
+    this.removeFromAllMatches(bookId);
+
     let itemRef = doc(this.firestore, `/users/${userId}/books/${bookId}`);
     return from(deleteDoc(itemRef));
   }
 
-  removeFromMatches(userId: string, bookId: string): any {
-    const collectionRef = collection(this.firestore, `/users/${userId}/matches`);
-    const q = query(collectionRef, where('userBook.id', '==', bookId));
+  getAllBooks(): Observable<any> {
+    let collectionGroupRef = collectionGroup(this.firestore, `books`);
+    const queryRef = query(collectionGroupRef);
+    return this.getDocumentSnapshot(queryRef);
+  }
 
-    return from(getDocs(q)).subscribe((querySnapshot) => {
-      querySnapshot.forEach((doc) => {
-        const docRef = doc.ref;
-        from(deleteDoc(docRef)).subscribe(
-          () => {
-            this.toastr.success("Book removed from matches");
-            setTimeout(() => {
-              location.reload();
-            }, 3000);
-          },
-          (error) => {
-            this.toastr.error(`Book removed from matches${error}`);
-          }
-        );
+  removeFromAllMatches(bookId: string) {
+    let collectionGroupRef = collectionGroup(this.firestore, `matches`);
+    const queryRef = query(collectionGroupRef);
+
+
+
+    return this.getDocumentSnapshot(queryRef).subscribe(matches => {
+      matches.filter((element) => {
+        return element.matchBook.id !== bookId && element.userBook.id !== bookId;
       });
+      console.log(matches, 'matcheees');
     });
   }
+
+  // removeFromMatches(userId: string, bookId: string): any {
+  //   const collectionRef = collection(this.firestore, `/users/${userId}/matches`);
+  //   const q = query(collectionRef, where('userBook.id', '==', bookId));
+
+  //   return from(getDocs(q)).subscribe((querySnapshot) => {
+  //     querySnapshot.forEach((doc) => {
+  //       const docRef = doc.ref;
+  //       from(deleteDoc(docRef)).subscribe(
+  //         () => {
+  //           this.toastr.success("Book removed from matches");
+  //           setTimeout(() => {
+  //             location.reload();
+  //           }, 3000);
+  //         },
+  //         (error) => {
+  //           this.toastr.error(`Book removed from matches${error}`);
+  //         }
+  //       );
+  //     });
+  //   });
+  // }
 
   removeFromFavourites(userId: string, bookId: string): any {
     const collectionRef = collection(this.firestore, `/users/${userId}/favourites`);

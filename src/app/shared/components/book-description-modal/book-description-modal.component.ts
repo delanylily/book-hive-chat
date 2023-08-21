@@ -12,10 +12,6 @@ export class BookDescriptionModalComponent implements OnInit {
 
   ngOnInit() { }
 
-  // onConfirm() {
-  //   this.onConfirmed.emit();
-  // }
-
   toggleModal() {
     this.isOpen = !this.isOpen;
   }

@@ -27,13 +27,15 @@ export class UserCollectionComponent implements OnInit, OnDestroy {
   }
 
   onDeleteBookConfirmation() {
-    this.dataService.deleteUserBook(this.userId, this.itemToDelete.id).subscribe(() => {
-      location.reload();
-      this.toastService.success("Delete successful!");
-    }), ((error) => {
-      this.toastService.error(`${error}`);
-    });
-    this.modal.toggleModal();
+    const elements = this.dataService.removeFromAllMatches(this.itemToDelete.id);
+    console.log(elements, 'elemen ts user collection');
+    // this.dataService.deleteUserBook(this.userId, this.itemToDelete.id).subscribe(() => {
+    //   location.reload();
+    //   this.toastService.success("Delete successful!");
+    // }), ((error) => {
+    //   this.toastService.error(`${error}`);
+    // });
+    // this.modal.toggleModal();
   }
 
   selectBookAvailability(event): void {

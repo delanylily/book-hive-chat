@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { filter, map, Subscription } from 'rxjs';
+import { filter, map, Subscription, tap } from 'rxjs';
 import { AuthService } from '../auth/services/auth.service';
 import { Book } from '../models/book';
 import { DataService } from '../shared/data.service';
@@ -9,6 +9,9 @@ import { Channel } from 'stream-chat';
 import { ChatService } from '../shared/chat.service';
 import { UserService } from '../shared/user.service';
 import { DocumentData } from 'firebase/firestore';
+import { Store } from '@ngrx/store';
+import { currentUser } from '../shared/state/user.actions';
+import { user } from '../shared/state/user.selector';
 
 @Component({
   selector: 'app-matches',
@@ -24,16 +27,20 @@ export class MatchesComponent implements OnInit, OnDestroy {
   user: any;
   bookDetailsSubscription: Subscription;
   userMatchesSubscription: Subscription;
+  storeSubscription: Subscription;
   matches: Array<any>;
   requestedDetails: { book: Book, user: string; };
   @ViewChild('requestModal') requestModal: RequestBookModalComponent;
 
-  constructor(private readonly userService: UserService, private readonly chatService: ChatService, private readonly router: Router, private readonly authService: AuthService, private readonly dataService: DataService) { }
+  constructor(private readonly store: Store<any>, private readonly chatService: ChatService, private readonly router: Router, private readonly authService: AuthService, private readonly dataService: DataService) {
+    this.store.dispatch(currentUser());
+  }
 
   ngOnInit() {
-    this.authService.user$.pipe(
-      filter(user => user !== null && user !== undefined),
-      map(user => {
+    this.storeSubscription = this.store.select(user).pipe(
+      filter(user => user !== undefined),
+      tap(user => {
+        this.user = user;
         this.userId = user.uid;
         this.getUserFavourites();
         this.getUserMatches();
@@ -70,14 +77,17 @@ export class MatchesComponent implements OnInit, OnDestroy {
   }
 
   getUserFavourites() {
-    console.log(this.userId, 'userID');
-    this.favouritesSubscription = this.dataService.getUserFavourites(this.userId).pipe(
-      map(fav => {
-        fav.map(book => {
-          this.bookList.push(book);
-        });
-      }),
-    ).subscribe();
+    this.favouritesSubscription = this.dataService.getUserFavourites(this.userId).subscribe(fav => {
+      console.log(fav, 'fav');
+    });
+
+    // this.favouritesSubscription = this.dataService.getUserFavourites(this.userId).pipe(
+    //   map(fav => {
+    //     fav.map(book => {
+    //       this.bookList.push(book);
+    //     });
+    //   }),
+    // ).subscribe();
   }
 
   navigateToUserProfile(bookOwnerId): void {
@@ -85,6 +95,7 @@ export class MatchesComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
+    this.storeSubscription.unsubscribe();
     if (this.favouritesSubscription) {
       this.favouritesSubscription.unsubscribe();
     }

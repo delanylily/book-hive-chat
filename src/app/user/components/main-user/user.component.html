@@ -1,0 +1,24 @@
+<ng-container *ngIf="(data$ | async) as data">
+  <div class="back">
+    <i (click)="goBack()" class="fa fa-solid fa-chevron-left"></i>
+    <span>{{data.user.displayName}}</span>
+  </div>
+  <div class="user-details">
+    <div class="user-img">
+      <img src="{{data.user.photoURL}}" alt="">
+    </div>
+    <div class="details">
+      <p class="name">{{data.user.displayName}}</p>
+      <p class="description" *ngIf="data.user?.description">{{data.user?.description}}</p>
+      <button class="btn-main small inverted">Message</button>
+    </div>
+  </div>
+  <div class="container-full-width">
+    <h5>Collection</h5>
+    <div class="collection">
+      <book-card *ngFor="let book of data.books" (onRequestBook)="onBookRequested($event)"
+        [cardSettings]="{delete: false, collection: false, summary: true, request: shouldShowRequest(book.id)}"
+        [bookVM]="book"></book-card>
+    </div>
+  </div>
+</ng-container>

@@ -14,18 +14,19 @@ import { environment } from 'src/environments/environment';
 export class UserService {
   firestore: Firestore = inject(Firestore);
   constructor(private authenticationService: AuthService) {
-    // this.currentUser = this.afAuth.currentUser;
   }
 
-  userData(userId: string) {
-    let collectionRef = collection(this.firestore, `/users/${userId}`);
-    const queryRef = query(collectionRef);
-    return this.getDocumentSnapshot(queryRef);
+  updateUser(userId: string, userForm: any): Observable<any> {
+    const ref = doc(this.firestore, 'users', userId);
+    return from(updateDoc(ref, { displayName: userForm.displayName, photoURL: userForm.photoUrl, description: userForm?.description }));
   }
 
-
-  async getUserDetails(userId: string) {
+  getUserDetails(userId: string): Observable<any> {
     const docRef = doc(this.firestore, 'users', userId);
+    return from(this.getSnapshot(docRef));
+  }
+
+  async getSnapshot(docRef) {
     const docSnap = await getDoc(docRef);
     if (docSnap.exists()) {
       return docSnap.data();
@@ -81,10 +82,7 @@ export class UserService {
   //   return from(updateDoc(ref, { displayName: newDisplayName, photoURL: newPhotoURL }));
   // }
 
-  updateUser(userId: string, userForm: any): Observable<any> {
-    const ref = doc(this.firestore, 'users', userId);
-    return from(updateDoc(ref, { displayName: userForm.displayName, photoURL: userForm.photoUrl, description: userForm?.description }));
-  }
+
 
   addUser(user: User): Observable<any> {
     const ref = doc(this.firestore, 'users', user?.uid);

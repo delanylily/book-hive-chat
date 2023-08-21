@@ -67,7 +67,7 @@ export class RequestBookModalComponent implements OnDestroy {
   }
 
   messageOwner() {
-    this.router.navigate(['/inbox']);
+    this.router.navigate(['/chat']);
   }
 
   viewCollection() {

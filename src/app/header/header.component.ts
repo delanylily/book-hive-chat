@@ -21,14 +21,10 @@ export class HeaderComponent implements OnDestroy {
   }
 
   logout(): void {
-    this.signOutSubscription = this.auth.signOut().pipe(
-      tap(() => {
-        this.router.navigate(['/auth/signin']);
-        this.toastr.success("Logout success");
-      })
-    ).subscribe({
-      error: err => this.toastr.error("Logout failed")
-    });
+    this.signOutSubscription = this.auth.signOut().subscribe(() => {
+      this.router.navigate(['/auth/signin']);
+      this.toastr.success("Logout success");
+    }, error => this.toastr.error(`Oops! Logout failed, reason: ${error}`));
   }
 
   ngOnDestroy(): void {

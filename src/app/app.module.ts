@@ -15,6 +15,9 @@ import { ToastrModule, ToastrService } from 'ngx-toastr';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { provideDatabase, getDatabase } from '@angular/fire/database';
 import { FirestoreModule } from '@angular/fire/firestore';
+import { StoreModule } from '@ngrx/store';
+import { userReducer } from './shared/state/reducer';
+import { EffectsModule } from '@ngrx/effects';
 
 @NgModule({
   declarations: [
@@ -27,6 +30,8 @@ import { FirestoreModule } from '@angular/fire/firestore';
     AuthModule,
     ChatModule,
     ToastrModule.forRoot(),
+    StoreModule.forRoot({ User: userReducer }),
+    EffectsModule.forRoot([]),
     BrowserAnimationsModule,
     FirestoreModule,
     provideFirestore(() => getFirestore()),

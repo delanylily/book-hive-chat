@@ -2,6 +2,36 @@
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 16.1.4.
 
+## BookHive
+#### Book Tinder Web Application for exchanging books
+BookHive is a personal project I have worked on independently to make exhchanging books, fun, easy and cost effective!
+
+##### Features
+- Swipe to view books listed by other users, choose to request the book or save to favourties
+- Inbox, live chat functionality to connect to users once a match has been made
+- Google Books API implementation to easily add books to your profile, just search the title or author to easily find and post your book
+- Matches will display any book match made with another user and allow you to view their collection
+- Fully responsive and simple UI
+
+##### Technologies Used
+- Angular v.16.1.4
+- Firebase Database, Firestore, Functions
+- Stream chat
+- NgRx store
+- Jasmine/Karma Testing
+- SCSS, LESS
+- Typescript
+
+
+
+![Home page of BookHive UI](./src/assets/images_readme/home.png)
+
+##### Screenshots
+<div style="display: flex;">
+  <img src="./src/assets/images_readme/signin.png" alt="Login Page of BookHive UI"  />
+  <img src="./src/assets/images_readme/chat.png" alt="Chat Page of BookHive UI"  />
+</div>
+
 ## Development server
 
 Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
