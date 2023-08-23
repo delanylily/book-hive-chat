@@ -25,7 +25,7 @@ export class UserComponent implements OnInit {
   requests: any;
   @ViewChild('modal') bookDescriptionModal: BookDescriptionModalComponent;
 
-  constructor(private readonly authService: AuthService, private location: Location, private activatedRoute: ActivatedRoute, private readonly userService: UserService, private readonly dataService: DataService) { }
+  constructor(private location: Location, private activatedRoute: ActivatedRoute, private readonly userService: UserService, private readonly dataService: DataService) { }
 
   ngOnInit() {
     this.profileUserId = this.activatedRoute.snapshot.params['userId'];
