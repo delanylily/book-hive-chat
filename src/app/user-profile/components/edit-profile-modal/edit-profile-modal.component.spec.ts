@@ -1,8 +1,4 @@
-/* tslint:disable:no-unused-variable */
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { By } from '@angular/platform-browser';
-import { DebugElement } from '@angular/core';
-
 import { EditProfileModalComponent } from './edit-profile-modal.component';
 
 describe('EditProfileModalComponent', () => {
@@ -11,9 +7,9 @@ describe('EditProfileModalComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ EditProfileModalComponent ]
+      declarations: [EditProfileModalComponent]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {
