@@ -60,12 +60,4 @@ export class UserComponent implements OnInit {
     console.log(book);
   }
 
-  request() {
-
-  }
-
-  saveBook() {
-
-  }
-
 }
