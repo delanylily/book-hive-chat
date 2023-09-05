@@ -18,7 +18,6 @@ export class UserDetailsComponent {
   editingForm: boolean;
   @Input() user: User;
   @ViewChild('modal', { static: true }) modal: EditProfileModalComponent;
-
   modalContent: { heading: string, message: string; };
   imageUrl: string;
   userForm: any;

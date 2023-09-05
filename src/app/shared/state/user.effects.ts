@@ -4,6 +4,7 @@ import { currentUser, currentUserLoaded } from "./user.actions";
 import { AuthService } from "src/app/auth/services/auth.service";
 import { Store } from "@ngrx/store";
 import { filter, map, tap } from "rxjs";
+import { User } from "../models/user";
 
 @Injectable()
 export class UserEffects {
@@ -16,7 +17,13 @@ export class UserEffects {
       tap(() => {
         this.authService.user$.pipe(
           filter(user => user !== null && user !== undefined)).subscribe(user => {
-            this.store.dispatch(currentUserLoaded({ user: user }));
+            const userFromFB: User = {
+              uid: user.uid,
+              email: user.email,
+              displayName: user.displayName,
+              photoURL: user.photoURL,
+            };
+            this.store.dispatch(currentUserLoaded({ user: userFromFB }));
           });
       })
     ),

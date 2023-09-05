@@ -77,17 +77,8 @@ export class MatchesComponent implements OnInit, OnDestroy {
   }
 
   getUserFavourites() {
-    this.favouritesSubscription = this.dataService.getUserFavourites(this.userId).subscribe(fav => {
-      console.log(fav, 'fav');
-    });
-
-    // this.favouritesSubscription = this.dataService.getUserFavourites(this.userId).pipe(
-    //   map(fav => {
-    //     fav.map(book => {
-    //       this.bookList.push(book);
-    //     });
-    //   }),
-    // ).subscribe();
+    this.favouritesSubscription = this.dataService.getUserFavourites(this.userId).pipe(
+      map(fav => fav.map(book => this.bookList.push(book)))).subscribe();
   }
 
   navigateToUserProfile(bookOwnerId): void {

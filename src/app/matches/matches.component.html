@@ -30,16 +30,16 @@
     </div>
     <div class="container-margin">
       <h6>Favourites</h6>
-      <div *ngIf="bookList else noFavourites" class="book-grid">
+      <div *ngIf="bookList.length else noFavourites" class="book-grid">
         <book-card [cardSettings]="{delete: true, summary: true}" (onRequestBook)="onRequestBook($event)"
           (bookDelete)="onBookDelete($event)" *ngFor="let book of bookList" [bookVM]="book"></book-card>
       </div>
       <ng-template #noFavourites>
         <div class="no-favourites">
-          <img class="bookshelf" src="../../assets/images/bookshelf.jpg" alt="">
+          <img class="bookshelf" src="../../assets/images/three-books.png" alt="">
           <h5>You have no books saved</h5>
-          <p class="length-sm-3">Register or login to save books to your favourites</p>
-          <button [routerLink]="['/home']" class="btn-main submit">Find Books</button>
+          <p *ngIf="!userId" class="length-sm-3">Register or login to save books to your favourites</p>
+          <button [routerLink]="['/home']" class="btn-main submit">Discover Books</button>
         </div>
       </ng-template>
     </div>

@@ -1,6 +1,7 @@
 <div class="user-details">
   <div class="user-img">
-    <img src="{{user.photoURL}}" alt="">
+    <i *ngIf="!user.photoURL?.length" class="fa fa-user"></i>
+    <img *ngIf="user.photoURL?.length" src="{{user.photoURL}}" alt="">
   </div>
   <div class="details">
     <p class="name">{{user.displayName}}</p>

@@ -15,9 +15,13 @@
 }
 
 .no-favourites {
-  text-align: center;
   display: grid;
-  place-items: center;
+  grid-gap: 15px;
+  padding: 20px;
+  width: fit-content;
+  justify-content: left;
+  border: 2px dashed rgb(165, 165, 165);
+  border-radius: 10px;
 }
 
 .book-card {
@@ -34,12 +38,11 @@
 }
 
 .matches {
-  background-color: white;
+  background-color: @color-secondary;
   display: grid;
-  grid-template-rows: repeat(2, auto);
-  justify-content: center;
+  padding: 20px;
+  justify-content: left;
   grid-gap: 15px;
-  margin: 15px;
 }
 
 .match-card {
@@ -50,6 +53,7 @@
   padding: 10px;
   align-items: center;
   max-width: 380px;
+  border-radius: 10px;
 }
 
 .match-details {
@@ -63,6 +67,12 @@
 .fa-heart {
   font-size: 30px;
   color: @color-primary;
+}
+
+@media(max-width: 450px) {
+  .matches {
+    justify-content: center;
+  }
 }
 
 @media(min-width: 850px) {

@@ -201,12 +201,21 @@ h6 {
 }
 
 .user-img {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
   width: 80px;
   height: 80px;
   border-radius: 50%;
   background: white;
   box-shadow: 1px 0 3px 1px #80808066;
   overflow: hidden;
+
+  & .fa-user {
+    font-size: 50px;
+    opacity: 30%;
+  }
 
   & img {
     width: inherit;
